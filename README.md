@@ -1,10 +1,14 @@
 # seagraperentals.com — coming-soon site
 
-Static site served by GitHub Pages, with a register-your-interest form.
+Static site served by GitHub Pages, with a register-your-interest form and a contact form.
 
 ```
-Browser ──POST JSON──▶ Cloudflare Worker (worker/index.js) ──▶ Turnstile check ──▶ Brevo double opt-in
+Browser ──POST JSON──▶ Cloudflare Worker (worker/index.js)
+                         POST /         ──▶ Turnstile check ──▶ Brevo double opt-in
+                         POST /contact  ──▶ Turnstile check ──▶ Brevo transactional email to our inbox
 ```
+
+No email address appears anywhere on the site or in this repository. Contact-form messages go only to the inbox named in the Worker setting `CONTACT_TO`, with the visitor as reply-to; nothing is sent back to the visitor, so the form cannot relay mail to third parties.
 
 The page holds no secrets. The Brevo API key and the Turnstile secret live only in the Worker's encrypted settings.
 
@@ -15,6 +19,7 @@ The page holds no secrets. The Brevo API key and the Turnstile secret live only 
 | `index.html` | the page |
 | `privacy.html` | privacy notice, linked from the consent box |
 | `confirmed.html` | where Brevo sends people after they click the confirmation link |
+| `contact.html` | contact form |
 | `assets/` | CSS, JS, self-hosted fonts (SIL OFL, licences included), images |
 | `worker/` | Cloudflare Worker source and its tests |
 | `email/doi-template.html` | Brevo double-opt-in email template |
@@ -22,7 +27,7 @@ The page holds no secrets. The Brevo API key and the Turnstile secret live only 
 
 ## Form modes
 
-`assets/js/site.js` runs **live** only on `seagraperentals.com` and `www.seagraperentals.com`. Everywhere else (local preview, review links) it runs in **demo** mode and makes no network calls. Add `?demo` to a production URL to force demo mode.
+`assets/js/site.js` drives both forms. It runs **live** only on `seagraperentals.com` and `www.seagraperentals.com`. Everywhere else (local preview, review links) it runs in **demo** mode and makes no network calls. Add `?demo` to a production URL to force demo mode.
 
 ## Local preview
 
@@ -48,6 +53,10 @@ cd worker && node --test
 | `BREVO_DOI_TEMPLATE_ID` | Text | numeric template id |
 | `ALLOWED_ORIGINS` | Text | optional, comma-separated |
 | `REDIRECT_URL` | Text | optional, defaults to `/confirmed.html` |
+| `CONTACT_TO` | Text | inbox that receives contact-form messages |
+| `CONTACT_FROM` | Text | Brevo-verified sender for those messages |
+
+The contact route needs `BREVO_API_KEY`, `TURNSTILE_SECRET`, `CONTACT_TO` and `CONTACT_FROM`; it does not need the list or template ids. The Brevo key must be allowed to send transactional email.
 
 Updating the Worker: open it in the dashboard → **Edit code** → paste `worker/index.js` → **Deploy**.
 
