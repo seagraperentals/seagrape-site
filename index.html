@@ -82,15 +82,15 @@
       <div class="card reveal" id="register">
         <div class="card-body" data-state="form">
           <h2 class="card-title" id="form-title">Register your interest</h2>
-          <p class="card-intro" data-for="guest">Be first to know when our residences open for booking, with first access to availability.</p>
-          <p class="card-intro" data-for="owner" hidden>Own a home in the Cayman Islands? Hear how we will care for it, and for the guests who stay there.</p>
+          <p class="card-intro" data-for="guest" hidden>Be first to know when our residences open for booking, with first access to availability.</p>
+          <p class="card-intro" data-for="owner">Own a home in the Cayman Islands? Hear how we will care for it, and for the guests who stay there.</p>
 
           <form id="interest-form" novalidate aria-labelledby="form-title">
             <fieldset class="toggle">
               <legend class="visually-hidden">I am</legend>
-              <input type="radio" id="aud-guest" name="audience" value="guest" checked>
+              <input type="radio" id="aud-guest" name="audience" value="guest">
               <label for="aud-guest">I'm planning a stay</label>
-              <input type="radio" id="aud-owner" name="audience" value="owner">
+              <input type="radio" id="aud-owner" name="audience" value="owner" checked>
               <label for="aud-owner">I own a property</label>
               <span class="toggle-thumb" aria-hidden="true"></span>
             </fieldset>
@@ -107,7 +107,7 @@
               <p class="field-error" id="f-email-err"></p>
             </div>
 
-            <div class="field" data-for="owner" hidden>
+            <div class="field" data-for="owner">
               <label for="f-area">Where is your property? <span class="optional">(optional)</span></label>
               <select id="f-area" name="area">
                 <option value="">Select an area</option>
@@ -135,7 +135,7 @@
             <div id="turnstile" class="turnstile"></div>
 
             <button type="submit" class="btn">
-              <span class="btn-label">Request early access</span>
+              <span class="btn-label">Register as an owner</span>
               <span class="btn-spinner" aria-hidden="true"></span>
             </button>
             <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
